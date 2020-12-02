@@ -2,7 +2,7 @@
   @description       : 
   @author            : ashish765082@gmail.com
   @group             : 
-  @last modified on  : 12-01-2020
+  @last modified on  : 12-02-2020
   @last modified by  : ashish765082@gmail.com
   Modifications Log 
   Ver   Date         Author                   Modification
@@ -11,6 +11,12 @@
 <template>
     <lightning-layout horizontal-align="spread">
 
+        <!-- This is for showing combobox -->
+        <lightning-layout-item flexibility="auto">
+            <lightning-combobox name="NoOfRecords" label="No. of Recouds to display" value={pageSize}
+                placeholder={pageSize} options={pgSizes} onchange={handleChangeSize}>
+            </lightning-combobox>
+        </lightning-layout-item>
         
         <lightning-layout-item flexibility="auto">
             <lightning-button-group>

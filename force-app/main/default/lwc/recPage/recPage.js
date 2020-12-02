@@ -50,7 +50,7 @@ const leadColumns = [
             alignment: 'left'
         }
     },
-    { label: 'Type', fieldName: 'Type' },
+    { label: 'Industry', fieldName: 'Industry' },
     {
         type: 'action',
         typeAttributes: { rowActions: actions },
@@ -92,9 +92,9 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     //to keep the value of the current tab clicked
     @track tabValue = 'Account';
 
+    // Variables for datatable
     selectedRows = [];
-    selectedRowsIds;
-
+    selectedRowsIds = [];
     accountColumns = accountColumns;
     leadColumns = leadColumns;
     opportunityColumns = opportunityColumns;
@@ -103,20 +103,17 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     error;
     wiredActivities;
 
-
+    //Variables for pagination
     pageSize = 10;
     @track pageNumber = 1;
     totalItemCount = 0;
 
-    get pgSizes()
-    {
-        return [
-            { label: '5', value: '5' },
-            { label: '10', value: '10' },
-            { label: '15', value: '15' },
-            { label: '25', value: '25' }
-        ];
-    }
+    //Variables for modals
+    bShowModalNew = false;
+    type;
+    recordId;
+    
+
     
     handlePreviousPage() {
         this.pageNumber = this.pageNumber - 1;
@@ -130,11 +127,13 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     {
         this.pageNumber = event.detail;
     }
-    
-    handleChangeSize(event)
+
+    get selLength()
     {
-        this.pageSize = event.detail.value;
-        this.pageNumber = 1;
+        return this.selectedRowsIds.length;
+    }
+
+    handleRefresh(){
         refreshApex(this.wiredActivities);
     }
 
@@ -176,26 +175,16 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     }
 
     editRowDetails(row) {
-        this[NavigationMixin.Navigate]({
-            type: 'standard__recordPage',
-            attributes: {
-                recordId: row.Id,
-                actionName: 'edit'}
-        });
-        refreshApex(this.wiredActivities);
+        this.type = 'Edit'
+        this.bShowModalNew = true;
+        this.recordId = row.Id;
     }
 
 
-    handleNew(event)
+    handleNew()
     {
-        this[NavigationMixin.Navigate]({
-            type: 'standard__objectPage',
-            attributes: {
-                objectApiName: event.target.value,
-                actionName: 'new'
-            }
-        });
-        refreshApex(this.wiredActivities);
+        this.type = 'New';
+        this.bShowModalNew = true;
     }
 
     handleSelectedRows(event)
@@ -205,6 +194,10 @@ export default class RecPage extends NavigationMixin(LightningElement) {
         } );
 
     }
+    handleClose()
+    {
+        this.bShowModalNew = false;
+    }
 
     handleDelete()
     {
@@ -212,15 +205,9 @@ export default class RecPage extends NavigationMixin(LightningElement) {
             'idLi':this.selectedRowsIds,
             'getObject':this.tabValue
         }).then(() => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success',
-                    message: 'Records deleted',
-                    variant: 'success'
-                })
-            );
             refreshApex(this.wiredActivities);
             this.selectedRows = [];
+            this.selectedRowsIds = [];
         }).catch(error => {
             this.dispatchEvent(
                 new ShowToastEvent({

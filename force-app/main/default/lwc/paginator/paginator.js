@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ashish765082@gmail.com
  * @group             : 
- * @last modified on  : 12-01-2020
+ * @last modified on  : 12-02-2020
  * @last modified by  : ashish765082@gmail.com
  * Modifications Log 
  * Ver   Date         Author                   Modification
@@ -71,6 +71,16 @@ export default class Paginator extends LightningElement {
         }
     }
 
+    get pgSizes()
+    {
+        return [
+            { label: '5', value: '5' },
+            { label: '10', value: '10' },
+            { label: '15', value: '15' },
+            { label: '25', value: '25' }
+        ];
+    }
+
     handlePrevious() {
         this.dispatchEvent(new CustomEvent('previous'));
         if ( this.pagiNumber1 != 1 ) {
@@ -109,6 +119,12 @@ export default class Paginator extends LightningElement {
         this.dispatchEvent(new CustomEvent('pagi', {
             detail: this.pageNumber
         }));
+    }
+
+    handleChangeSize(event)
+    {
+        this.pageSize = event.detail.value;
+        this.dispatchEvent( new CustomEvent('refresh'))
     }
 
 }
