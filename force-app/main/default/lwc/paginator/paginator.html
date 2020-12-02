@@ -1,0 +1,40 @@
+<!--
+  @description       : 
+  @author            : ashish765082@gmail.com
+  @group             : 
+  @last modified on  : 12-01-2020
+  @last modified by  : ashish765082@gmail.com
+  Modifications Log 
+  Ver   Date         Author                   Modification
+  1.0   12-01-2020   ashish765082@gmail.com   Initial Version
+-->
+<template>
+    <lightning-layout horizontal-align="spread">
+
+        
+        <lightning-layout-item flexibility="auto">
+            <lightning-button-group>
+                <lightning-button-icon-stateful
+                    icon-name="utility:chevronleft"
+                    onclick={handlePrevious}
+                    variant="brand"
+                    disabled={isFirstPage}
+                ></lightning-button-icon-stateful>
+                <lightning-button label={pagiNumber1} value={pagiNumber1} onclick={handlePagi} variant={variant1}></lightning-button>
+                <lightning-button label={pagiNumber2} value={pagiNumber2} onclick={handlePagi} variant={variant2}></lightning-button>
+                <lightning-button label={pagiNumber3} value={pagiNumber3} onclick={handlePagi} variant={variant3}></lightning-button>
+                <lightning-button-icon-stateful
+                    icon-name="utility:chevronright"
+                    onclick={handleNext}
+                    variant="brand"
+                    disabled={isLastPage}
+                ></lightning-button-icon-stateful>
+            </lightning-button-group>
+        </lightning-layout-item>
+
+        <lightning-layout-item flexibility="auto">
+            {totalItemCount} items • page {currentPageNumber} of {totalPages}
+        </lightning-layout-item>
+
+    </lightning-layout>
+</template>

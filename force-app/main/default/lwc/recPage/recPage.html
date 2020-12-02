@@ -1,0 +1,228 @@
+<!--
+  @description       : 
+  @author            : ashish765082@gmail.com
+  @group             : 
+  @last modified on  : 12-02-2020
+  @last modified by  : ashish765082@gmail.com
+  Modifications Log 
+  Ver   Date         Author                   Modification
+  1.0   11-30-2020   ashish765082@gmail.com   Initial Version
+-->
+<template>
+    <lightning-card icon-name="action:record" title="Object Records">
+
+        <!-- These are the tabset that we are using. -->
+        <lightning-tabset variant="scoped">
+
+            <!-- For the Account tab. -->
+            <lightning-tab label="Accounts" value="Account" onactive={getTab}>
+
+                <lightning-layout multiple-rows>
+
+                    <lightning-layout-item size="3" padding="around-small" >
+                        <p class="slds-align_absolute-center">
+                            <lightning-formatted-text value="Total Records: " ></lightning-formatted-text>{totalItemCount}
+                        </p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" padding="around-small">
+                        <lightning-combobox
+                            name="NoOfRecords"
+                            label="No. of Recouds to display"
+                            value={pageSize}
+                            placeholder={pageSize}
+                            options={pgSizes}
+                            onchange={handleChangeSize} >
+                        </lightning-combobox>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6" >
+                        <lightning-button variant="brand" label="New Account" value="Account" onclick={handleNew} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="destructive" label="Delete Selected" value="Account" title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small"></lightning-button>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-datatable
+                                key-field="id"
+                                data={data}
+                                columns={accountColumns}
+                                onrowaction={handleRowAction}
+                                onrowselection={handleSelectedRows}
+                                selected-rows={selectedRows} >
+                        </lightning-datatable>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="auto" padding="around-small">
+                        <c-paginator 
+                            page-number={pageNumber} 
+                            page-size={pageSize}
+                            total-item-count={totalItemCount} 
+                            onprevious={handlePreviousPage}
+                            onnext={handleNextPage}
+                            onpagi={handlePagi}>
+                        </c-paginator>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+                
+            </lightning-tab>
+
+            <!-- For the Contact tab. -->
+            <lightning-tab label="Contacts" value="Contact" onactive={getTab}>
+                <lightning-layout multiple-rows>
+
+                    <lightning-layout-item size="3" padding="around-small" >
+                        <p class="slds-align_absolute-center">
+                            <lightning-formatted-text value="Total Records: " ></lightning-formatted-text>{totalItemCount}
+                        </p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" padding="around-small">
+                        <lightning-combobox
+                            name="NoOfRecords"
+                            label="No. of Recouds to display"
+                            value={pageSize}
+                            placeholder={pageSize}
+                            options={pgSizes}
+                            onchange={handleChangeSize} >
+                        </lightning-combobox>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6" padding="around-small" >
+                        <lightning-button variant="brand" label="New Contact" value="Contact" onclick={handleNew} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="destructive" label="Delete Selected" value="Contact" title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small"></lightning-button>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-datatable
+                                key-field="id"
+                                data={data}
+                                columns={contactColumns}
+                                onrowaction={handleRowAction}
+                                onrowselection={handleSelectedRows}
+                                selected-rows={selectedRows} >
+                        </lightning-datatable>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="auto" padding="around-small">
+                        <c-paginator 
+                            page-number={pageNumber} 
+                            page-size={pageSize}
+                            total-item-count={totalItemCount} 
+                            onprevious={handlePreviousPage}
+                            onnext={handleNextPage}
+                            onpagi={handlePagi}>
+                        </c-paginator>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+                
+            </lightning-tab>
+
+            <!-- For the Lead tab. -->
+            <lightning-tab label="Leads" value="Lead" onactive={getTab}>
+                <lightning-layout multiple-rows>
+
+                    <lightning-layout-item size="3" padding="around-small" >
+                        <p class="slds-align_absolute-center">
+                            <lightning-formatted-text value="Total Records: " ></lightning-formatted-text>{totalItemCount}
+                        </p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" padding="around-small">
+                        <lightning-combobox
+                            name="NoOfRecords"
+                            label="No. of Recouds to display"
+                            value={pageSize}
+                            placeholder={pageSize}
+                            options={pgSizes}
+                            onchange={handleChangeSize} >
+                        </lightning-combobox>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6" padding="around-small" >
+                        <lightning-button variant="brand" label="New Lead" value="Lead" onclick={handleNew} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="destructive" label="Delete Selected" value="Lead" title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small"></lightning-button>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-datatable
+                                key-field="id"
+                                data={data}
+                                columns={leadColumns}
+                                onrowaction={handleRowAction}
+                                onrowselection={handleSelectedRows}
+                                selected-rows={selectedRows} >
+                        </lightning-datatable>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="auto" padding="around-small">
+                        <c-paginator 
+                            page-number={pageNumber} 
+                            page-size={pageSize}
+                            total-item-count={totalItemCount} 
+                            onprevious={handlePreviousPage}
+                            onnext={handleNextPage}
+                            onpagi={handlePagi}>
+                        </c-paginator>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+                
+            </lightning-tab>
+
+            <!-- For the opportunity tab. -->
+            <lightning-tab label="Opportunities" value="Opportunity" onactive={getTab}>
+                <lightning-layout multiple-rows>
+
+                    <lightning-layout-item size="3" padding="around-small" >
+                        <p class="slds-align_absolute-center">
+                            <lightning-formatted-text value="Total Records: " ></lightning-formatted-text>{totalItemCount}
+                        </p>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="3" padding="around-small">
+                        <lightning-combobox
+                            name="NoOfRecords"
+                            label="No. of Recouds to display"
+                            value={pageSize}
+                            placeholder={pageSize}
+                            options={pgSizes}
+                            onchange={handleChangeSize} >
+                        </lightning-combobox>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6" padding="around-small" >
+                        <lightning-button variant="brand" label="New Opportunity" value="Opportunity" onclick={handleNew} class="slds-m-left_x-small"></lightning-button>
+                        <lightning-button variant="destructive" label="Delete Selected" value="Opportunity" title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small"></lightning-button>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-datatable
+                                key-field="id"
+                                data={data}
+                                columns={opportunityColumns}
+                                onrowaction={handleRowAction}
+                                onrowselection={handleSelectedRows}
+                                selected-rows={selectedRows} >
+                        </lightning-datatable>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item flexibility="auto" padding="around-small">
+                        <c-paginator 
+                            page-number={pageNumber} 
+                            page-size={pageSize}
+                            total-item-count={totalItemCount} 
+                            onprevious={handlePreviousPage}
+                            onnext={handleNextPage}
+                            onpagi={handlePagi}>
+                        </c-paginator>
+                    </lightning-layout-item>
+
+                </lightning-layout>
+                
+            </lightning-tab>
+        </lightning-tabset>
+        
+    </lightning-card>
+</template>
