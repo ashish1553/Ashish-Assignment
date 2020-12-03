@@ -1,45 +1,49 @@
 <!--
-  @description       : 
+  @description       : This lwc is for showing the pagination part.
   @author            : ashish765082@gmail.com
   @group             : 
-  @last modified on  : 12-02-2020
+  @last modified on  : 12-03-2020
   @last modified by  : ashish765082@gmail.com
   Modifications Log 
   Ver   Date         Author                   Modification
   1.0   12-01-2020   ashish765082@gmail.com   Initial Version
 -->
 <template>
-    <lightning-card>
-        <lightning-layout horizontal-align="spread">
+    <lightning-layout horizontal-align="spread">
 
-            <!-- This will show total pages -->
-            <lightning-layout-item flexibility="auto" padding="around-small">
-                {totalItemCount} items • page {currentPageNumber} of {totalPages}
-            </lightning-layout-item>
+        <!-- This will show total pages -->
+        <lightning-layout-item flexibility="auto" padding="around-small">
+            {totalItemCount} items • page {currentPageNumber} of {totalPages}
+        </lightning-layout-item>
 
-            <lightning-layout-item flexibility="auto">
-                <lightning-button-group>
-                    <lightning-button-icon-stateful icon-name="utility:chevronleft" onclick={handlePrevious}
-                        variant="brand" disabled={isFirstPage}></lightning-button-icon-stateful>
-                    <lightning-button label={pagiNumber1} value={pagiNumber1} onclick={handlePagi} variant={variant1}>
-                    </lightning-button>
-                    <lightning-button label={pagiNumber2} value={pagiNumber2} onclick={handlePagi} variant={variant2}>
-                    </lightning-button>
-                    <lightning-button label={pagiNumber3} value={pagiNumber3} onclick={handlePagi} variant={variant3}>
-                    </lightning-button>
-                    <lightning-button-icon-stateful icon-name="utility:chevronright" onclick={handleNext}
-                        variant="brand" disabled={isLastPage}></lightning-button-icon-stateful>
-                </lightning-button-group>
-            </lightning-layout-item>
+        <!-- This will create button group for pagination. -->
+        <lightning-layout-item flexibility="auto">
+            <lightning-button-group>
+                <!-- This will show left arrow. -->
+                <lightning-button-icon-stateful icon-name="utility:chevronleft" onclick={handlePrevious} variant="brand"
+                    disabled={isFirstPage}></lightning-button-icon-stateful>
+                <!-- This will show page 1 -->
+                <lightning-button label={pagiNumber1} value={pagiNumber1} onclick={handlePagi} variant={variant1}>
+                </lightning-button>
+                <!-- This will show page 2 -->
+                <lightning-button label={pagiNumber2} value={pagiNumber2} onclick={handlePagi} variant={variant2}>
+                </lightning-button>
+                <!-- This will show page 3 -->
+                <lightning-button label={pagiNumber3} value={pagiNumber3} onclick={handlePagi} variant={variant3}>
+                </lightning-button>
+                <!-- This will show right arrow. -->
+                <lightning-button-icon-stateful icon-name="utility:chevronright" onclick={handleNext} variant="brand"
+                    disabled={isLastPage}></lightning-button-icon-stateful>
+            </lightning-button-group>
+        </lightning-layout-item>
 
-            <!-- This is for showing combobox -->
-            <lightning-layout-item flexibility="auto" padding="around-small">
-                <lightning-combobox name="NoOfRecords" label="No. of Recouds to display" value={pageSize}
-                    placeholder={pageSize} options={pgSizes} onchange={handleChangeSize}>
-                </lightning-combobox>
-            </lightning-layout-item>
+        <!-- This is for showing combobox -->
+        <lightning-layout-item flexibility="auto" padding="around-small">
+            <lightning-combobox name="NoOfRecords" label="No. of Recouds to display" value={pageSize}
+                placeholder={pageSize} options={pgSizes} onchange={handleChangeSize}>
+            </lightning-combobox>
+        </lightning-layout-item>
 
-        </lightning-layout>
-    </lightning-card>
+    </lightning-layout>
 
 </template>

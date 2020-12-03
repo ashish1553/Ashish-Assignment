@@ -1,8 +1,8 @@
 <!--
-  @description       : 
+  @description       : This page is for showing all kinds of modals.
   @author            : ashish765082@gmail.com
   @group             : 
-  @last modified on  : 12-02-2020
+  @last modified on  : 12-03-2020
   @last modified by  : ashish765082@gmail.com
   Modifications Log 
   Ver   Date         Author                   Modification
@@ -27,7 +27,7 @@
             <!-- This is modal body if New Object is fired -->
             <template if:true={isNew}>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                    <lightning-record-form object-api-name={objectApiName} fields={myFields} onsuccess={handleRefresh}
+                    <lightning-record-form object-api-name={objectApiName} fields={myFields} onsubmit={handleSubmit}
                         oncancel={handleClose}>
                     </lightning-record-form>
                 </div>
@@ -37,7 +37,7 @@
             <template if:true={isEdit}>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
                     <lightning-record-form object-api-name={objectApiName} fields={myFields} record-id={recId}
-                        mode="edit" onsuccess={handleRefresh} oncancel={handleClose}>
+                        mode="edit" onsubmit={handleSubmit} oncancel={handleClose}>
                     </lightning-record-form>
                 </div>
             </template>

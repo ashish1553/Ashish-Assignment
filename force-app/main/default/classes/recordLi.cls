@@ -1,8 +1,9 @@
 /**
- * @description       : 
+ * @description       : This class if for keeping the records that have to be returned to the client side. 
+ *                      It will also keep the pagination data.
  * @author            : ashish765082@gmail.com
  * @group             : 
- * @last modified on  : 12-01-2020
+ * @last modified on  : 12-03-2020
  * @last modified by  : ashish765082@gmail.com
  * Modifications Log 
  * Ver   Date         Author                   Modification

@@ -1,8 +1,8 @@
 <!--
-  @description       : 
+  @description       : This will show the tabs and the datatable.
   @author            : ashish765082@gmail.com
   @group             : 
-  @last modified on  : 12-02-2020
+  @last modified on  : 12-03-2020
   @last modified by  : ashish765082@gmail.com
   Modifications Log 
   Ver   Date         Author                   Modification
@@ -10,173 +10,177 @@
 -->
 <template>
 
-    <!-- Here I have defined toast Notifications -->
-    <!-- <template if:true={bShowToast}>
-        <c-toast-event msg-type={msgType} message={message}>
-        </c-toast-event>
-    </template> -->
 
-    <!-- These are the tabset that we are using. -->
-    <lightning-tabset variant="scoped">
+    <lightning-card>
 
-        <!-- For the Account tab. -->
-        <lightning-tab label="Accounts" value="Account" onactive={getTab}>
+        <!-- These are the tabset that we are using. -->
+        <lightning-tabset variant="scoped">
 
-            <lightning-layout multiple-rows>
+            <!-- For the Account tab. -->
+            <lightning-tab label="Accounts" value="Account" onactive={getTab}>
 
-                <lightning-layout-item flexibility="auto" padding="around-small">
-                    <lightning-layout horizontal-align="spread">
-                        <!-- Total selected records -->
-                        <lightning-layout-item flexibility="auto">
-                            <p class="slds-align_absolute-center">
-                                <lightning-formatted-text value="Selected Records: "></lightning-formatted-text>
-                                {selLength}
-                            </p>
-                        </lightning-layout-item>
+                <lightning-layout multiple-rows>
 
-                        <!-- Buttons -->
-                        <lightning-layout-item flexibility="auto">
-                            <lightning-button variant="brand" label="New Account" value="Account" onclick={handleNew}
-                                class="slds-m-left_x-small"></lightning-button>
-                            <lightning-button variant="destructive" label="Delete Selected" value="Account"
-                                title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small">
-                            </lightning-button>
-                        </lightning-layout-item>
-                    </lightning-layout>
+                    <lightning-layout-item flexibility="auto" padding="around-small">
+                        <lightning-layout horizontal-align="spread">
+                            <!-- Total selected records -->
+                            <lightning-layout-item flexibility="auto">
+                                <p class="slds-align_absolute-center">
+                                    <lightning-formatted-text value="Selected Records: "></lightning-formatted-text>
+                                    {selLength}
+                                </p>
+                            </lightning-layout-item>
 
-                </lightning-layout-item>
+                            <!-- Buttons -->
+                            <lightning-layout-item flexibility="auto">
+                                <lightning-button variant="brand" label="New Account" value="Account"
+                                    onclick={handleNew} class="slds-m-left_x-small"></lightning-button>
+                                <lightning-button variant="destructive" label="Delete Selected" value="Account"
+                                    title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small">
+                                </lightning-button>
+                            </lightning-layout-item>
+                        </lightning-layout>
+
+                    </lightning-layout-item>
 
 
-                <!-- Datatable -->
-                <lightning-layout-item flexibility="auto">
-                    <lightning-datatable key-field="id" data={data} columns={accountColumns}
-                        onrowaction={handleRowAction} onrowselection={handleSelectedRows} selected-rows={selectedRows}>
-                    </lightning-datatable>
-                </lightning-layout-item>
+                    <!-- Datatable -->
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-datatable key-field="id" data={data} columns={accountColumns}
+                            onrowaction={handleRowAction} onrowselection={handleSelectedRows}
+                            selected-rows={selectedRows}>
+                        </lightning-datatable>
+                    </lightning-layout-item>
 
-            </lightning-layout>
+                </lightning-layout>
 
-        </lightning-tab>
+            </lightning-tab>
 
-        <!-- For the Contact tab. -->
-        <lightning-tab label="Contacts" value="Contact" onactive={getTab}>
-            <lightning-layout multiple-rows>
+            <!-- For the Contact tab. -->
+            <lightning-tab label="Contacts" value="Contact" onactive={getTab}>
+                <lightning-layout multiple-rows>
 
-                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-layout-item flexibility="auto" padding="around-small">
 
-                    <lightning-layout horizontal-align="spread">
-                        <!-- Total selected records -->
-                        <lightning-layout-item flexibility="auto">
-                            <p class="slds-align_absolute-center">
-                                <lightning-formatted-text value="Selected Records: "></lightning-formatted-text>
-                                {selLength}
-                            </p>
-                        </lightning-layout-item>
+                        <lightning-layout horizontal-align="spread">
+                            <!-- Total selected records -->
+                            <lightning-layout-item flexibility="auto">
+                                <p class="slds-align_absolute-center">
+                                    <lightning-formatted-text value="Selected Records: "></lightning-formatted-text>
+                                    {selLength}
+                                </p>
+                            </lightning-layout-item>
 
-                        <!-- Buttons -->
-                        <lightning-layout-item flexibility="auto">
-                            <lightning-button variant="brand" label="New Contact" value="Contact" onclick={handleNew}
-                                class="slds-m-left_x-small"></lightning-button>
-                            <lightning-button variant="destructive" label="Delete Selected" value="Contact"
-                                title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small">
-                            </lightning-button>
-                        </lightning-layout-item>
-                    </lightning-layout>
-                </lightning-layout-item>
+                            <!-- Buttons -->
+                            <lightning-layout-item flexibility="auto">
+                                <lightning-button variant="brand" label="New Contact" value="Contact"
+                                    onclick={handleNew} class="slds-m-left_x-small"></lightning-button>
+                                <lightning-button variant="destructive" label="Delete Selected" value="Contact"
+                                    title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small">
+                                </lightning-button>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
 
-                <!-- Datatable -->
-                <lightning-layout-item flexibility="auto">
-                    <lightning-datatable key-field="id" data={data} columns={contactColumns}
-                        onrowaction={handleRowAction} onrowselection={handleSelectedRows} selected-rows={selectedRows}>
-                    </lightning-datatable>
-                </lightning-layout-item>
+                    <!-- Datatable -->
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-datatable key-field="id" data={data} columns={contactColumns}
+                            onrowaction={handleRowAction} onrowselection={handleSelectedRows}
+                            selected-rows={selectedRows}>
+                        </lightning-datatable>
+                    </lightning-layout-item>
 
-            </lightning-layout>
+                </lightning-layout>
 
-        </lightning-tab>
+            </lightning-tab>
 
-        <!-- For the Lead tab. -->
-        <lightning-tab label="Leads" value="Lead" onactive={getTab}>
-            <lightning-layout multiple-rows>
+            <!-- For the Lead tab. -->
+            <lightning-tab label="Leads" value="Lead" onactive={getTab}>
+                <lightning-layout multiple-rows>
 
-                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-layout-item flexibility="auto" padding="around-small">
 
-                    <lightning-layout horizontal-align="spread">
-                        <!-- Total Selected Records -->
-                        <lightning-layout-item flexibility="auto">
-                            <p class="slds-align_absolute-center">
-                                <lightning-formatted-text value="Selected Records: "></lightning-formatted-text>
-                                {selLength}
-                            </p>
-                        </lightning-layout-item>
+                        <lightning-layout horizontal-align="spread">
+                            <!-- Total Selected Records -->
+                            <lightning-layout-item flexibility="auto">
+                                <p class="slds-align_absolute-center">
+                                    <lightning-formatted-text value="Selected Records: "></lightning-formatted-text>
+                                    {selLength}
+                                </p>
+                            </lightning-layout-item>
 
-                        <!-- Buttons -->
-                        <lightning-layout-item flexibility="auto">
-                            <lightning-button variant="brand" label="New Lead" value="Lead" onclick={handleNew}
-                                class="slds-m-left_x-small"></lightning-button>
-                            <lightning-button variant="destructive" label="Delete Selected" value="Lead"
-                                title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small">
-                            </lightning-button>
-                        </lightning-layout-item>
-                    </lightning-layout>
-                </lightning-layout-item>
+                            <!-- Buttons -->
+                            <lightning-layout-item flexibility="auto">
+                                <lightning-button variant="brand" label="New Lead" value="Lead" onclick={handleNew}
+                                    class="slds-m-left_x-small"></lightning-button>
+                                <lightning-button variant="destructive" label="Delete Selected" value="Lead"
+                                    title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small">
+                                </lightning-button>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
 
-                <!-- Datatable -->
-                <lightning-layout-item flexibility="auto">
-                    <lightning-datatable key-field="id" data={data} columns={leadColumns} onrowaction={handleRowAction}
-                        onrowselection={handleSelectedRows} selected-rows={selectedRows}>
-                    </lightning-datatable>
-                </lightning-layout-item>
+                    <!-- Datatable -->
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-datatable key-field="id" data={data} columns={leadColumns}
+                            onrowaction={handleRowAction} onrowselection={handleSelectedRows}
+                            selected-rows={selectedRows}>
+                        </lightning-datatable>
+                    </lightning-layout-item>
 
-            </lightning-layout>
+                </lightning-layout>
 
-        </lightning-tab>
+            </lightning-tab>
 
-        <!-- For the opportunity tab. -->
-        <lightning-tab label="Opportunities" value="Opportunity" onactive={getTab}>
-            <lightning-layout multiple-rows>
+            <!-- For the opportunity tab. -->
+            <lightning-tab label="Opportunities" value="Opportunity" onactive={getTab}>
+                <lightning-layout multiple-rows>
 
-                <lightning-layout-item flexibility="auto" padding="around-small">
+                    <lightning-layout-item flexibility="auto" padding="around-small">
 
-                    <lightning-layout horizontal-align="spread">
-                        <!-- Total Selected records -->
-                        <lightning-layout-item flexibility="auto">
-                            <p class="slds-align_absolute-center">
-                                <lightning-formatted-text value="Selected Records: "></lightning-formatted-text>
-                                {selLength}
-                            </p>
-                        </lightning-layout-item>
+                        <lightning-layout horizontal-align="spread">
+                            <!-- Total Selected records -->
+                            <lightning-layout-item flexibility="auto">
+                                <p class="slds-align_absolute-center">
+                                    <lightning-formatted-text value="Selected Records: "></lightning-formatted-text>
+                                    {selLength}
+                                </p>
+                            </lightning-layout-item>
 
-                        <!-- Buttons -->
-                        <lightning-layout-item flexibility="auto">
-                            <lightning-button variant="brand" label="New Opportunity" value="Opportunity"
-                                onclick={handleNew} class="slds-m-left_x-small"></lightning-button>
-                            <lightning-button variant="destructive" label="Delete Selected" value="Opportunity"
-                                title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small">
-                            </lightning-button>
-                        </lightning-layout-item>
-                    </lightning-layout>
-                </lightning-layout-item>
+                            <!-- Buttons -->
+                            <lightning-layout-item flexibility="auto">
+                                <lightning-button variant="brand" label="New Opportunity" value="Opportunity"
+                                    onclick={handleNew} class="slds-m-left_x-small"></lightning-button>
+                                <lightning-button variant="destructive" label="Delete Selected" value="Opportunity"
+                                    title="Destructive action" onclick={handleDelete} class="slds-m-left_x-small">
+                                </lightning-button>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-layout-item>
 
-                <!-- Datatable component -->
-                <lightning-layout-item flexibility="auto">
-                    <lightning-datatable key-field="id" data={data} columns={opportunityColumns}
-                        onrowaction={handleRowAction} onrowselection={handleSelectedRows} selected-rows={selectedRows}>
-                    </lightning-datatable>
-                </lightning-layout-item>
+                    <!-- Datatable component -->
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-datatable key-field="id" data={data} columns={opportunityColumns}
+                            onrowaction={handleRowAction} onrowselection={handleSelectedRows}
+                            selected-rows={selectedRows}>
+                        </lightning-datatable>
+                    </lightning-layout-item>
 
-            </lightning-layout>
+                </lightning-layout>
 
-        </lightning-tab>
+            </lightning-tab>
 
-    </lightning-tabset>
+        </lightning-tabset>
 
-    <!-- paginator component -->
-    <lightning-layout-item flexibility="auto" padding="around-small">
-        <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount}
-            onprevious={handlePreviousPage} onnext={handleNextPage} onpagi={handlePagi} onchangesize={handleChangeSize}>
-        </c-paginator>
-    </lightning-layout-item>
+        <!-- paginator component -->
+        <lightning-layout-item flexibility="auto" padding="around-small">
+            <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount}
+                onprevious={handlePreviousPage} onnext={handleNextPage} onpagi={handlePagi}
+                onchangesize={handleChangeSize}>
+            </c-paginator>
+        </lightning-layout-item>
+    </lightning-card>
+
 
 
     <!-- Here I have defined modals-->
