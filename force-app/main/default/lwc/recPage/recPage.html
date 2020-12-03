@@ -10,6 +10,11 @@
 -->
 <template>
 
+    <!-- Here I have defined toast Notifications -->
+    <!-- <template if:true={bShowToast}>
+        <c-toast-event msg-type={msgType} message={message}>
+        </c-toast-event>
+    </template> -->
 
     <!-- These are the tabset that we are using. -->
     <lightning-tabset variant="scoped">
@@ -49,13 +54,6 @@
                     </lightning-datatable>
                 </lightning-layout-item>
 
-                <!-- paginator component -->
-                <lightning-layout-item flexibility="auto" padding="around-small">
-                    <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount}
-                        onprevious={handlePreviousPage} onnext={handleNextPage} onpagi={handlePagi}>
-                    </c-paginator>
-                </lightning-layout-item>
-
             </lightning-layout>
 
         </lightning-tab>
@@ -91,13 +89,6 @@
                     <lightning-datatable key-field="id" data={data} columns={contactColumns}
                         onrowaction={handleRowAction} onrowselection={handleSelectedRows} selected-rows={selectedRows}>
                     </lightning-datatable>
-                </lightning-layout-item>
-
-                <!-- Paginator Component -->
-                <lightning-layout-item flexibility="auto" padding="around-small">
-                    <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount}
-                        onprevious={handlePreviousPage} onnext={handleNextPage} onpagi={handlePagi}>
-                    </c-paginator>
                 </lightning-layout-item>
 
             </lightning-layout>
@@ -137,13 +128,6 @@
                     </lightning-datatable>
                 </lightning-layout-item>
 
-                <!-- Paginator Component -->
-                <lightning-layout-item flexibility="auto" padding="around-small">
-                    <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount}
-                        onprevious={handlePreviousPage} onnext={handleNextPage} onpagi={handlePagi}>
-                    </c-paginator>
-                </lightning-layout-item>
-
             </lightning-layout>
 
         </lightning-tab>
@@ -181,25 +165,25 @@
                     </lightning-datatable>
                 </lightning-layout-item>
 
-                <!-- Paginator component -->
-                <lightning-layout-item flexibility="auto" padding="around-small">
-                    <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount}
-                        onprevious={handlePreviousPage} onnext={handleNextPage} onpagi={handlePagi}
-                        onrefresh={handleRefresh}>
-                    </c-paginator>
-                </lightning-layout-item>
-
             </lightning-layout>
 
         </lightning-tab>
 
     </lightning-tabset>
 
+    <!-- paginator component -->
+    <lightning-layout-item flexibility="auto" padding="around-small">
+        <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount}
+            onprevious={handlePreviousPage} onnext={handleNextPage} onpagi={handlePagi} onchangesize={handleChangeSize}>
+        </c-paginator>
+    </lightning-layout-item>
 
-    <!--Here I have defined modals-->
+
+    <!-- Here I have defined modals-->
     <template if:true={bShowModalNew}>
-        <c-modals object-api-name={tabValue} type={type} onclose={handleClose} rec-id={recordId} onrefresh={handleRefresh}>
-        </c-modals>
+        <c-modal type={type} rec-id={recordId} object-api-name={tabValue} onrefresh={handleRefresh}
+            onclose={handleClose}>
+        </c-modal>
     </template>
 
 </template>

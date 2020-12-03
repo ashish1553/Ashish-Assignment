@@ -20,9 +20,17 @@ export default class Paginator extends LightningElement {
     /** The total number of items in the list. */
     @api totalItemCount;
 
-    @api pagiNumber1 = 1;
-    @api pagiNumber2 = 2;
-    @api pagiNumber3 = 3;
+    @api pagiNumber1;
+    @api pagiNumber2;
+    @api pagiNumber3;
+
+    connectedCallback() {
+        if (this.pageNumber == 1) {
+            this.pagiNumber1 = 1;
+            this.pagiNumber2 = 2;
+            this.pagiNumber3 = 3;
+        }
+    }
 
     get currentPageNumber() {
         return this.totalItemCount === 0 ? 0 : this.pageNumber;
@@ -41,38 +49,31 @@ export default class Paginator extends LightningElement {
     }
 
     get variant1() {
-        if( this.pagiNumber1 == this.pageNumber )
-        {
+        if (this.pagiNumber1 == this.currentPageNumber) {
             return "brand";
         }
-        else
-        {
+        else {
             return "";
         }
     }
     get variant2() {
-        if( this.pagiNumber2 == this.pageNumber )
-        {
+        if (this.pagiNumber2 == this.currentPageNumber) {
             return "brand";
         }
-        else
-        {
+        else {
             return "";
         }
     }
     get variant3() {
-        if( this.pagiNumber3 == this.pageNumber )
-        {
+        if (this.pagiNumber3 == this.currentPageNumber) {
             return "brand";
         }
-        else
-        {
+        else {
             return "";
         }
     }
 
-    get pgSizes()
-    {
+    get pgSizes() {
         return [
             { label: '5', value: '5' },
             { label: '10', value: '10' },
@@ -83,7 +84,7 @@ export default class Paginator extends LightningElement {
 
     handlePrevious() {
         this.dispatchEvent(new CustomEvent('previous'));
-        if ( this.pagiNumber1 != 1 ) {
+        if (this.pagiNumber1 != 1) {
             this.pagiNumber3 = this.pagiNumber2;
             this.pagiNumber2 = this.pagiNumber1;
             this.pagiNumber1--;
@@ -92,7 +93,7 @@ export default class Paginator extends LightningElement {
 
     handleNext() {
         this.dispatchEvent(new CustomEvent('next'));
-        if ( !( this.pagiNumber3 == this.pageNumber ) ) {
+        if (!(this.pagiNumber3 == this.pageNumber)) {
             this.pagiNumber1 = this.pagiNumber2;
             this.pagiNumber2 = this.pagiNumber3;
             this.pagiNumber3++;
@@ -100,31 +101,33 @@ export default class Paginator extends LightningElement {
     }
 
     handlePagi(event) {
-        this.pageNumber = event.target.value;
-        if (this.pageNumber == 1) {
+        this.dispatchEvent(new CustomEvent('pagi', {
+            detail: event.target.value
+        }));
+        if (event.target.value == 1) {
             this.pagiNumber1 = 1;
             this.pagiNumber2 = 2;
             this.pagiNumber3 = 3;
         }
-        else if (this.pageNumber == this.totalPages) {
+        else if (event.target.value == this.totalPages) {
             this.pagiNumber1 = this.totalPages - 2;
             this.pagiNumber2 = this.totalPages - 1;
             this.pagiNumber3 = this.totalPages;
         }
         else {
-            this.pagiNumber1 = this.pageNumber - 1;
-            this.pagiNumber2 = this.pageNumber;
-            this.pagiNumber3 = this.pageNumber + 1;
+            this.pagiNumber1 = event.target.value - 1;
+            this.pagiNumber2 = event.target.value;
+            this.pagiNumber3 = event.target.value + 1;
         }
-        this.dispatchEvent(new CustomEvent('pagi', {
-            detail: this.pageNumber
-        }));
     }
 
-    handleChangeSize(event)
-    {
-        this.pageSize = event.detail.value;
-        this.dispatchEvent( new CustomEvent('refresh'))
+    handleChangeSize(event) {
+        this.dispatchEvent(new CustomEvent('changesize', {
+            detail: event.detail.value
+        }))
+        this.pagiNumber1 = 1;
+        this.pagiNumber2 = 2;
+        this.pagiNumber3 = 3;
     }
 
 }

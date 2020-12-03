@@ -15,8 +15,10 @@
         <div class="slds-modal__container">
             <!-- This is modal header. -->
             <header class="slds-modal__header">
-                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeModal} title="Close">
-                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small" ></lightning-icon>
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    onclick={handleClose} title="Close">
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small">
+                    </lightning-icon>
                 </button>
                 <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{type}</h2>
                 <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">{objectApiName}</h2>
@@ -25,11 +27,8 @@
             <!-- This is modal body if New Object is fired -->
             <template if:true={isNew}>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                    <lightning-record-form
-                        object-api-name={objectApiName}
-                        fields={myFields}
-                        onsuccess={handleCreated}
-                        oncancel={closeModal}>
+                    <lightning-record-form object-api-name={objectApiName} fields={myFields} onsuccess={handleRefresh}
+                        oncancel={handleClose}>
                     </lightning-record-form>
                 </div>
             </template>
@@ -37,17 +36,13 @@
             <!-- This is modal body if Edid Object is fired -->
             <template if:true={isEdit}>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
-                    <lightning-record-form
-                        object-api-name={objectApiName}
-                        fields={myFields}
-                        record-id={recId}
-                        mode="edit"
-                        onsuccess={handleCreated}
-                        oncancel={closeModal}>
+                    <lightning-record-form object-api-name={objectApiName} fields={myFields} record-id={recId}
+                        mode="edit" onsuccess={handleRefresh} oncancel={handleClose}>
                     </lightning-record-form>
                 </div>
             </template>
 
         </div>
     </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
 </template>

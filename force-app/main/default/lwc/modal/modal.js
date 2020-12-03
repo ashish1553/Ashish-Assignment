@@ -42,27 +42,16 @@ import OPPORTUNITY_REVENUE_FIELD from '@salesforce/schema/Opportunity.ExpectedRe
 import OPPORTUNITY_TYPE_FIELD from '@salesforce/schema/Opportunity.Type';
 const OPPORTUNITY_FIELDS = [OPPORTUNITY_NAME_FIELD, OPPORTUNITY_AMOUNT_FIELD, OPPORTUNITY_LEADSOURCE_FIELD, OPPORTUNITY_REVENUE_FIELD, OPPORTUNITY_TYPE_FIELD];
 
-export default class Modals extends LightningElement {
 
-    @api objectApiName;
+export default class Modal extends LightningElement {
+
     @api type;
     @api recId;
+    @api objectApiName;
 
     // this is for storing fields Array.
     myFields;
 
-    // To check weather it is edit form or new form.
-    get isNew()
-    {
-        return this.type == 'New';
-    }
-
-    // To check weather it is edit form or new form.
-    get isEdit()
-    {
-        return this.type == 'Edit';
-    }
-    
     connectedCallback()
     {
         if(this.objectApiName == 'Account'){
@@ -79,12 +68,24 @@ export default class Modals extends LightningElement {
         }
     }
 
-    handleCreated()
+    // To check weather it is edit form or new form.
+    get isNew()
     {
-        this.dispatchEvent(new CustomEvent('refresh'))
+        return this.type == 'New';
     }
 
-    closeModal() {
+    // To check weather it is edit form or new form.
+    get isEdit()
+    {
+        return this.type == 'Edit';
+    }
+
+    handleRefresh(){
+        this.dispatchEvent(new CustomEvent('refresh'));
+    }
+
+    handleClose(){
         this.dispatchEvent(new CustomEvent('close'));
     }
+
 }

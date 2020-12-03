@@ -22,6 +22,7 @@ import { refreshApex } from '@salesforce/apex';
 import { NavigationMixin } from 'lightning/navigation';
 
 
+
 const actions = [
     { label: 'Edit', name: 'edit' },
     { label: 'Delete', name: 'delete' },
@@ -30,7 +31,8 @@ const accountColumns = [
     { label: 'Account Name', fieldName: 'Name' },
     { label: 'Account Site', fieldName: 'Site' },
     { label: 'Account Source', fieldName: 'AccountSource' },
-    { label: 'Annual Revenue', fieldName: 'AnnualRevenue', type: 'currency',
+    {
+        label: 'Annual Revenue', fieldName: 'AnnualRevenue', type: 'currency',
         cellAttributes: {
             alignment: 'left'
         }
@@ -45,7 +47,8 @@ const leadColumns = [
     { label: 'Account Name', fieldName: 'Name' },
     { label: 'Company', fieldName: 'Company' },
     { label: 'Email', fieldName: 'Email' },
-    { label: 'Annual Revenue', fieldName: 'AnnualRevenue', type: 'currency',
+    {
+        label: 'Annual Revenue', fieldName: 'AnnualRevenue', type: 'currency',
         cellAttributes: {
             alignment: 'left'
         }
@@ -60,7 +63,8 @@ const opportunityColumns = [
     { label: 'Name', fieldName: 'Name' },
     { label: 'Opportunity Amount', fieldName: 'Amount' },
     { label: 'Lead Source', fieldName: 'LeadSource' },
-    { label: 'Expected Revenue', fieldName: 'ExpectedRevenue', type: 'currency',
+    {
+        label: 'Expected Revenue', fieldName: 'ExpectedRevenue', type: 'currency',
         cellAttributes: {
             alignment: 'left'
         }
@@ -75,7 +79,8 @@ const contactColumns = [
     { label: 'Name', fieldName: 'Name' },
     { label: 'MailingAddress', fieldName: 'MailingAddress' },
     { label: 'LeadSource', fieldName: 'LeadSource' },
-    { label: 'Email', fieldName: 'Email', type: 'email',
+    {
+        label: 'Email', fieldName: 'Email', type: 'email',
         cellAttributes: {
             alignment: 'left'
         }
@@ -112,28 +117,37 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     bShowModalNew = false;
     type;
     recordId;
-    
 
-    
+    //Variables for toast notification
+    // bShowToast = false;
+    // msgType;
+    // message;
+
     handlePreviousPage() {
         this.pageNumber = this.pageNumber - 1;
     }
-    
+
     handleNextPage() {
         this.pageNumber = this.pageNumber + 1;
     }
-    
-    handlePagi(event)
-    {
+
+    handlePagi(event) {
         this.pageNumber = event.detail;
     }
-
-    get selLength()
+    
+    handleChangeSize(event)
     {
+        this.pageSize = event.detail;
+        this.pageNumber = 1;
+        refreshApex(this.wiredActivities);
+    }
+
+    get selLength() {
         return this.selectedRowsIds.length;
     }
 
-    handleRefresh(){
+
+    handleRefresh() {
         refreshApex(this.wiredActivities);
     }
 
@@ -154,56 +168,38 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     deleteRow(row) {
         deleteRecord(row.Id)
             .then(() => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success',
-                        message: 'Record deleted',
-                        variant: 'success'
-                    })
-                );
                 refreshApex(this.wiredActivities);
             })
             .catch(error => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Error deleting record',
-                        message: error.body.message,
-                        variant: 'error'
-                    })
-                );
             });
     }
 
     editRowDetails(row) {
-        this.type = 'Edit'
         this.bShowModalNew = true;
+        this.type = 'Edit';
         this.recordId = row.Id;
     }
 
 
-    handleNew()
-    {
-        this.type = 'New';
+    handleNew() {
         this.bShowModalNew = true;
+        this.type = 'New';
     }
 
-    handleSelectedRows(event)
-    {
-        this.selectedRowsIds = event.detail.selectedRows.map( row => {
+    handleSelectedRows(event) {
+        this.selectedRowsIds = event.detail.selectedRows.map(row => {
             return row.Id;
-        } );
+        });
 
     }
-    handleClose()
-    {
+    handleClose() {
         this.bShowModalNew = false;
     }
 
-    handleDelete()
-    {
+    handleDelete() {
         deleteSelected({
-            'idLi':this.selectedRowsIds,
-            'getObject':this.tabValue
+            'idLi': this.selectedRowsIds,
+            'getObject': this.tabValue
         }).then(() => {
             refreshApex(this.wiredActivities);
             this.selectedRows = [];
@@ -218,6 +214,7 @@ export default class RecPage extends NavigationMixin(LightningElement) {
             );
         });
     }
+
 
     @wire(getRecordsMethods, { getObject: '$tabValue', pageNumber: '$pageNumber', pageSize: '$pageSize' })
     wiredRecords(value) {
@@ -235,8 +232,7 @@ export default class RecPage extends NavigationMixin(LightningElement) {
         }
     }
 
-    getTab(event)
-    {
+    getTab(event) {
         this.tabValue = event.target.value;
     }
 }
