@@ -98,22 +98,16 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     // Will go to the previous page.
     handlePreviousPage() {
         this.pageNumber = this.pageNumber - 1;
-        this.selectedRows = [];
-        this.selectedRowsIds = [];
     }
 
     // Will go to the next page.
     handleNextPage() {
         this.pageNumber = this.pageNumber + 1;
-        this.selectedRows = [];
-        this.selectedRowsIds = [];
     }
 
     // Move the page to required destination.
     handlePagi(event) {
         this.pageNumber = event.detail;
-        this.selectedRows = [];
-        this.selectedRowsIds = [];
     }
     
     // Will set the page number to one whenever changing checkbox in paginator.
