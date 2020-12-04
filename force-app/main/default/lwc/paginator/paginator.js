@@ -120,7 +120,7 @@ export default class Paginator extends LightningElement {
             this.pagiNumber2 = 2;
             this.pagiNumber3 = 3;
         }
-        else if (event.target.value == this.totalPages) {
+        else if (event.target.value >= this.totalPages) {
             this.pagiNumber1 = this.totalPages - 2;
             this.pagiNumber2 = this.totalPages - 1;
             this.pagiNumber3 = this.totalPages;
