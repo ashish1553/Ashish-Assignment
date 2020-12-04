@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ashish765082@gmail.com
  * @group             : 
- * @last modified on  : 12-03-2020
+ * @last modified on  : 12-04-2020
  * @last modified by  : ashish765082@gmail.com
  * Modifications Log 
  * Ver   Date         Author                   Modification
@@ -98,16 +98,22 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     // Will go to the previous page.
     handlePreviousPage() {
         this.pageNumber = this.pageNumber - 1;
+        this.selectedRows = [];
+        this.selectedRowsIds = [];
     }
 
     // Will go to the next page.
     handleNextPage() {
         this.pageNumber = this.pageNumber + 1;
+        this.selectedRows = [];
+        this.selectedRowsIds = [];
     }
 
     // Move the page to required destination.
     handlePagi(event) {
         this.pageNumber = event.detail;
+        this.selectedRows = [];
+        this.selectedRowsIds = [];
     }
     
     // Will set the page number to one whenever changing checkbox in paginator.
@@ -207,5 +213,7 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     // Changes the tabvalue whenever we change the tabs.
     getTab(event) {
         this.tabValue = event.target.value;
+        this.selectedRows = [];
+        this.selectedRowsIds = [];
     }
 }
