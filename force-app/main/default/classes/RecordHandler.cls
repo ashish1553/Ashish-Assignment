@@ -28,23 +28,4 @@ public with sharing class RecordHandler {
         upsert rec;
     }
 
-    @AuraEnabled
-    public static List<String> deleteSelected(List<String> listOfSelectedRecIds, String objRecordToDel){
-
-        if (objRecordToDel == 'Account') {
-            List<SObject> recs = Database.query('SELECT Id FROM Account WHERE Id IN :listOfSelectedRecIds');        
-            delete recs;
-        } else if (objRecordToDel == 'Lead') {
-            List<SObject> recs = Database.query('SELECT Id FROM Lead WHERE Id IN :listOfSelectedRecIds');        
-            delete recs;
-        } else if (objRecordToDel == 'Opportunity') {
-            List<SObject> recs = Database.query('SELECT Id FROM Opportunity WHERE Id IN :listOfSelectedRecIds');        
-            delete recs;
-        } else if (objRecordToDel == 'Contact'){
-            List<SObject> recs = Database.query('SELECT Id FROM Contact WHERE Id IN :listOfSelectedRecIds');        
-            delete recs;
-        }
-        
-        return listOfSelectedRecIds;
-    }
 }

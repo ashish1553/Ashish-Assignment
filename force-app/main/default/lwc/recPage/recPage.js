@@ -10,63 +10,13 @@
 **/
 import { LightningElement, wire, track } from 'lwc';
 
-import getRecordsMethods from '@salesforce/apex/getRecords.getRecordsMethods';
-import deleteSelected from '@salesforce/apex/RecordHandler.deleteSelected';
+import fetchObject from '@salesforce/apex/getRecDynamically.fetchObject';
+import deleteRecord from '@salesforce/apex/getRecDynamically.deleteRecord';
 
 import { refreshApex } from '@salesforce/apex';
 
 import { NavigationMixin } from 'lightning/navigation';
 
-
-// Field labels for datatable.
-const actions = [
-    { label: 'Edit', name: 'edit' },
-    { label: 'Delete', name: 'delete' },
-];
-const accountColumns = [
-    { label: 'Account Name', fieldName: 'Name' },
-    { label: 'Account Site', fieldName: 'Site' },
-    { label: 'Account Source', fieldName: 'AccountSource' },
-    { label: 'Annual Revenue', fieldName: 'AnnualRevenue', type: 'currency' },
-    { label: 'Type', fieldName: 'Type' },
-    {
-        type: 'action',
-        typeAttributes: { rowActions: actions },
-    }
-];
-const leadColumns = [
-    { label: 'Account Name', fieldName: 'Name' },
-    { label: 'Company', fieldName: 'Company' },
-    { label: 'Email', fieldName: 'Email', type: 'email' },
-    { label: 'Annual Revenue', fieldName: 'AnnualRevenue', type: 'currency' },
-    { label: 'Industry', fieldName: 'Industry' },
-    {
-        type: 'action',
-        typeAttributes: { rowActions: actions },
-    }
-];
-const opportunityColumns = [
-    { label: 'Name', fieldName: 'Name' },
-    { label: 'Opportunity Amount', fieldName: 'Amount' },
-    { label: 'Stage Name', fieldName: 'StageName' },
-    { label: 'Close Date', fieldName: 'CloseDate', type: 'date' },
-    { label: 'Type', fieldName: 'Type' },
-    {
-        type: 'action',
-        typeAttributes: { rowActions: actions },
-    }
-];
-const contactColumns = [
-    { label: 'Name', fieldName: 'Name' },
-    { label: 'Birthdate', fieldName: 'Birthdate', type: 'date' },
-    { label: 'LeadSource', fieldName: 'LeadSource' },
-    { label: 'Email', fieldName: 'Email', type: 'email' },
-    { label: 'Phone', fieldName: 'Phone', type: 'phone' },
-    {
-        type: 'action',
-        typeAttributes: { rowActions: actions },
-    }
-];
 
 export default class RecPage extends NavigationMixin(LightningElement) {
 
@@ -78,10 +28,7 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     selectedRowsIds = [];
 
     // initializing columns for different datatables
-    accountColumns = accountColumns;
-    leadColumns = leadColumns;
-    opportunityColumns = opportunityColumns;
-    contactColumns = contactColumns;
+    datatableColumns;
 
 
     @track retrivedRecords = []; //it contains all the records.
@@ -194,9 +141,8 @@ export default class RecPage extends NavigationMixin(LightningElement) {
 
     // Handles all kinds of deletion of record weather grouped or single.
     handleDelete() {
-        deleteSelected({
-            'listOfSelectedRecIds': this.selectedRowsIds,
-            'objRecordToDel': this.tabValue
+        deleteRecord({
+            'recIds': this.selectedRowsIds
         }).then(() => {
             refreshApex(this.wiredActivities);
             this.selectedRows = [];
@@ -204,23 +150,45 @@ export default class RecPage extends NavigationMixin(LightningElement) {
         }).catch();
     }
 
-    // Retrives the data from the apex class for the datatable and paginator.
-    @wire(getRecordsMethods, { getObjectName: '$tabValue' })
-    wiredRecords(value) {
+    // This will fetch the records as well as fields using apex method
+    @wire(fetchObject, { strSObjectName: '$tabValue',strFieldsetName: 'Datatable_Field_Set' })
+    wiredRecs(value) {
         this.wiredActivities = value;
         const { data, error } = value;
-        if (data) {
-            this.retrivedRecords = data;
-            this.totalItemCount = data.length;
+        if(data){
+
+            this.retrivedRecords = data.lstSObject;
+            this.totalItemCount = data.lstSObject.length;
             this.totalPages = Math.ceil(this.totalItemCount / this.pageSize);
 
             this.dataToDisplay = this.retrivedRecords.slice(0,this.pageSize); 
             this.endingRecord = this.pageSize;
 
+            // This will create columns for datatable
+            this.datatableColumns = data.lstFields.map( e => {
+                var obj = {};
+                obj['label'] = e['label'];
+                obj['fieldName'] = e['fieldPath'];
+                obj['type'] = e['type'];
+                return obj;
+            });
+
+            // For defining action button in lightning datatable
+            const actions = [
+                { label: 'Edit', name: 'edit' },
+                { label: 'Delete', name: 'delete' },
+            ];
+
+            // pushed the action button in datatable column
+            this.datatableColumns.push({
+                type: 'action',
+                typeAttributes: { rowActions: actions },
+            })
             this.error = undefined;
-        } else if (error) {
+        }
+        else if(error){
             this.error = error;
-            this.data = undefined;
+            console.log(error);
         }
     }
 
