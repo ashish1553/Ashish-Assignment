@@ -2,7 +2,7 @@
   @description       : This will show the tabs and the datatable.
   @author            : ashish765082@gmail.com
   @group             : 
-  @last modified on  : 12-03-2020
+  @last modified on  : 12-16-2020
   @last modified by  : ashish765082@gmail.com
   Modifications Log 
   Ver   Date         Author                   Modification
@@ -46,7 +46,7 @@
 
                     <!-- Datatable -->
                     <lightning-layout-item flexibility="auto">
-                        <lightning-datatable key-field="id" data={data} columns={accountColumns}
+                        <lightning-datatable key-field="id" data={dataToDisplay} columns={accountColumns}
                             onrowaction={handleRowAction} onrowselection={handleSelectedRows}
                             selected-rows={selectedRows}>
                         </lightning-datatable>
@@ -84,7 +84,7 @@
 
                     <!-- Datatable -->
                     <lightning-layout-item flexibility="auto">
-                        <lightning-datatable key-field="id" data={data} columns={contactColumns}
+                        <lightning-datatable key-field="id" data={dataToDisplay} columns={contactColumns}
                             onrowaction={handleRowAction} onrowselection={handleSelectedRows}
                             selected-rows={selectedRows}>
                         </lightning-datatable>
@@ -122,7 +122,7 @@
 
                     <!-- Datatable -->
                     <lightning-layout-item flexibility="auto">
-                        <lightning-datatable key-field="id" data={data} columns={leadColumns}
+                        <lightning-datatable key-field="id" data={dataToDisplay} columns={leadColumns}
                             onrowaction={handleRowAction} onrowselection={handleSelectedRows}
                             selected-rows={selectedRows}>
                         </lightning-datatable>
@@ -160,7 +160,7 @@
 
                     <!-- Datatable component -->
                     <lightning-layout-item flexibility="auto">
-                        <lightning-datatable key-field="id" data={data} columns={opportunityColumns}
+                        <lightning-datatable key-field="id" data={dataToDisplay} columns={opportunityColumns}
                             onrowaction={handleRowAction} onrowselection={handleSelectedRows}
                             selected-rows={selectedRows}>
                         </lightning-datatable>
@@ -174,9 +174,9 @@
 
         <!-- paginator component -->
         <lightning-layout-item flexibility="auto" padding="around-small">
-            <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount}
-                onprevious={handlePreviousPage} onnext={handleNextPage} onpagi={handlePagi}
-                onchangesize={handleChangeSize}>
+            <c-paginator page-number={pageNumber} page-size={pageSize} total-item-count={totalItemCount} total-pages={totalPages}
+                onprevious={handlePreviousPage} onnext={handleNextPage} onpagebuttonclick={handlePageButtonClick}
+                onchangepagesize={handleChangePageSize}>
             </c-paginator>
         </lightning-layout-item>
     </lightning-card>

@@ -2,7 +2,7 @@
  * @description       : This class is used for creating and deleting records.
  * @author            : ashish765082@gmail.com
  * @group             : 
- * @last modified on  : 12-03-2020
+ * @last modified on  : 12-16-2020
  * @last modified by  : ashish765082@gmail.com
  * Modifications Log 
  * Ver   Date         Author                   Modification
@@ -11,40 +11,40 @@
 public with sharing class RecordHandler {
     
     @AuraEnabled
-    public static void createNewRec( ObjectWrapper objWrap )
+    public static void createNewRec( ObjectWrapper objToEditOrCreate )
     {
-        system.debug(objWrap);
+        system.debug(objToEditOrCreate);
         SObject rec;
-        if (objWrap.ObjectApiName == 'Account') {
-            rec = objWrap.Account;
-        } else if (objWrap.ObjectApiName == 'Lead') {
-            rec = objWrap.Lead;
-        } else if (objWrap.ObjectApiName == 'Contact') {
-            rec = objWrap.Contact;
-        } else if (objWrap.ObjectApiName == 'Opportunity') {
-            rec = objWrap.Opportunity;
+        if (objToEditOrCreate.ObjectApiName == 'Account') {
+            rec = objToEditOrCreate.Account;
+        } else if (objToEditOrCreate.ObjectApiName == 'Lead') {
+            rec = objToEditOrCreate.Lead;
+        } else if (objToEditOrCreate.ObjectApiName == 'Contact') {
+            rec = objToEditOrCreate.Contact;
+        } else if (objToEditOrCreate.ObjectApiName == 'Opportunity') {
+            rec = objToEditOrCreate.Opportunity;
         }
         system.debug(rec);
         upsert rec;
     }
 
     @AuraEnabled
-    public static List<String> deleteSelected(List<String> idLi, String getObject){
+    public static List<String> deleteSelected(List<String> listOfSelectedRecIds, String objRecordToDel){
 
-        if (getObject == 'Account') {
-            List<SObject> recs = Database.query('SELECT Id FROM Account WHERE Id IN :idLi');        
+        if (objRecordToDel == 'Account') {
+            List<SObject> recs = Database.query('SELECT Id FROM Account WHERE Id IN :listOfSelectedRecIds');        
             delete recs;
-        } else if (getObject == 'Lead') {
-            List<SObject> recs = Database.query('SELECT Id FROM Lead WHERE Id IN :idLi');        
+        } else if (objRecordToDel == 'Lead') {
+            List<SObject> recs = Database.query('SELECT Id FROM Lead WHERE Id IN :listOfSelectedRecIds');        
             delete recs;
-        } else if (getObject == 'Opportunity') {
-            List<SObject> recs = Database.query('SELECT Id FROM Opportunity WHERE Id IN :idLi');        
+        } else if (objRecordToDel == 'Opportunity') {
+            List<SObject> recs = Database.query('SELECT Id FROM Opportunity WHERE Id IN :listOfSelectedRecIds');        
             delete recs;
-        } else if (getObject == 'Contact'){
-            List<SObject> recs = Database.query('SELECT Id FROM Contact WHERE Id IN :idLi');        
+        } else if (objRecordToDel == 'Contact'){
+            List<SObject> recs = Database.query('SELECT Id FROM Contact WHERE Id IN :listOfSelectedRecIds');        
             delete recs;
         }
         
-        return idLi;
+        return listOfSelectedRecIds;
     }
 }

@@ -2,7 +2,7 @@
  * @description       : This will handle the functionality of the pagination.
  * @author            : ashish765082@gmail.com
  * @group             : 
- * @last modified on  : 12-04-2020
+ * @last modified on  : 12-16-2020
  * @last modified by  : ashish765082@gmail.com
  * Modifications Log 
  * Ver   Date         Author                   Modification
@@ -13,24 +13,27 @@ import { LightningElement, api } from 'lwc';
 export default class Paginator extends LightningElement {
     /** The current page number. */
     @api pageNumber;
-
+    
     /** The number of items on a page. */
     @api pageSize;
-
+    
     /** The total number of items in the list. */
     @api totalItemCount;
+    
+    // Give the total pages.
+    @api totalPages
 
     // These variable will change according to the page number we are on, So I have defined variables for that.
-    @api pagiNumber1;
-    @api pagiNumber2;
-    @api pagiNumber3;
+    @api pageButtonNumber1;
+    @api pageButtonNumber2;
+    @api pageButtonNumber3;
 
     // Initializing the variables when component loaded.
     connectedCallback() {
         if (this.pageNumber == 1) {
-            this.pagiNumber1 = 1;
-            this.pagiNumber2 = 2;
-            this.pagiNumber3 = 3;
+            this.pageButtonNumber1 = 1;
+            this.pageButtonNumber2 = 2;
+            this.pageButtonNumber3 = 3;
         }
     }
 
@@ -49,30 +52,25 @@ export default class Paginator extends LightningElement {
         return this.pageNumber >= this.totalPages;
     }
 
-    // Give the total pages.
-    get totalPages() {
-        return Math.ceil(this.totalItemCount / this.pageSize);
-    }
-
     // Below three variant method is for higlighting the page number we are on right now.
-    get variant1() {
-        if (this.pagiNumber1 == this.currentPageNumber) {
+    get buttonToGlow1() {
+        if (this.pageButtonNumber1 == this.currentPageNumber) {
             return "brand";
         }
         else {
             return "";
         }
     }
-    get variant2() {
-        if (this.pagiNumber2 == this.currentPageNumber) {
+    get buttonToGlow2() {
+        if (this.pageButtonNumber2 == this.currentPageNumber) {
             return "brand";
         }
         else {
             return "";
         }
     }
-    get variant3() {
-        if (this.pagiNumber3 == this.currentPageNumber) {
+    get buttonToGlow3() {
+        if (this.pageButtonNumber3 == this.currentPageNumber) {
             return "brand";
         }
         else {
@@ -93,53 +91,53 @@ export default class Paginator extends LightningElement {
     // This method will handle the clicking of left button and will reduce the page number
     handlePrevious() {
         this.dispatchEvent(new CustomEvent('previous'));
-        if (this.pagiNumber1 != 1) {
-            this.pagiNumber3 = this.pagiNumber2;
-            this.pagiNumber2 = this.pagiNumber1;
-            this.pagiNumber1--;
+        if (this.pageButtonNumber1 > 1) {
+            this.pageButtonNumber3 = this.pageButtonNumber2;
+            this.pageButtonNumber2 = this.pageButtonNumber1;
+            this.pageButtonNumber1--;
         }
     }
 
     // This method will handle the clicking of right button and will increase the page number.
     handleNext() {
         this.dispatchEvent(new CustomEvent('next'));
-        if (!(this.pagiNumber3 == this.pageNumber)) {
-            this.pagiNumber1 = this.pagiNumber2;
-            this.pagiNumber2 = this.pagiNumber3;
-            this.pagiNumber3++;
+        if ( !(this.pageButtonNumber3 == this.totalPages) ) {
+            this.pageButtonNumber1 = this.pageButtonNumber2;
+            this.pageButtonNumber2 = this.pageButtonNumber3;
+            this.pageButtonNumber3++;
         }
     }
 
     // This button will handle the clicking of the page jump button and set the page number according to the button.
-    handlePagi(event) {
-        this.dispatchEvent(new CustomEvent('pagi', {
+    handlePageButtonClick(event) {
+        this.dispatchEvent(new CustomEvent('pagebuttonclick', {
             detail: event.target.value
         }));
         if (event.target.value == 1) {
-            this.pagiNumber1 = 1;
-            this.pagiNumber2 = 2;
-            this.pagiNumber3 = 3;
+            this.pageButtonNumber1 = 1;
+            this.pageButtonNumber2 = 2;
+            this.pageButtonNumber3 = 3;
         }
         else if (event.target.value >= this.totalPages) {
-            this.pagiNumber1 = this.totalPages - 2;
-            this.pagiNumber2 = this.totalPages - 1;
-            this.pagiNumber3 = this.totalPages;
+            this.pageButtonNumber1 = this.totalPages - 2;
+            this.pageButtonNumber2 = this.totalPages - 1;
+            this.pageButtonNumber3 = this.totalPages;
         }
         else {
-            this.pagiNumber1 = event.target.value - 1;
-            this.pagiNumber2 = event.target.value;
-            this.pagiNumber3 = event.target.value + 1;
+            this.pageButtonNumber1 = event.target.value - 1;
+            this.pageButtonNumber2 = event.target.value;
+            this.pageButtonNumber3 = event.target.value + 1;
         }
     }
 
     // Set the page number when changing the checkboxes.
     handleChangeSize(event) {
-        this.dispatchEvent(new CustomEvent('changesize', {
+        this.dispatchEvent(new CustomEvent('changepagesize', {
             detail: event.detail.value
         }))
-        this.pagiNumber1 = 1;
-        this.pagiNumber2 = 2;
-        this.pagiNumber3 = 3;
+        this.pageButtonNumber1 = 1;
+        this.pageButtonNumber2 = 2;
+        this.pageButtonNumber3 = 3;
     }
 
 }

@@ -2,7 +2,7 @@
  * @description       : This class is used for getting data for lightning datatable.
  * @author            : ashish765082@gmail.com
  * @group             : 
- * @last modified on  : 12-03-2020
+ * @last modified on  : 12-16-2020
  * @last modified by  : ashish765082@gmail.com
  * Modifications Log 
  * Ver   Date         Author                   Modification
@@ -13,51 +13,36 @@ public with sharing class getRecords {
 
     // This method will return required data according to the object given in the parameter get Object.
     @AuraEnabled(Cacheable=true)
-    public static recordLi getRecordsMethods( String getObject, Integer pageNumber, Integer pageSize){
-        
-        Integer offset = (pageNumber - 1) * pageSize;
-        recordLi result = new recordLi();
-        result.pageSize = pageSize;
-        result.pageNumber = pageNumber;
-        
-        if ( getObject == 'Account' ) {
-            result.records = Database.query(
+    public static List<SObject> getRecordsMethods( String getObjectName ){
+
+        List<SObject> result = new List<SObject>();
+
+        if ( getObjectName == 'Account' ) {
+            result = Database.query(
                 'SELECT Id, Name, Site, AnnualRevenue, AccountSource, Type FROM Account' +
                 ' WITH SECURITY_ENFORCED' +
-                ' ORDER BY Name LIMIT :pageSize OFFSET :offset'
-            );
-            result.totalItemCount = Database.countQuery(
-                'SELECT count() FROM Account '
+                ' ORDER BY Name'
             );
         }
-        else if ( getObject == 'Lead' ) {
-            result.records = Database.query(
+        else if ( getObjectName == 'Lead' ) {
+            result = Database.query(
                 'SELECT Id, Name, Company, AnnualRevenue, Email, Industry FROM Lead' +
                 ' WITH SECURITY_ENFORCED' +
-                ' ORDER BY Name LIMIT :pageSize OFFSET :offset'
-            );
-            result.totalItemCount = Database.countQuery(
-                'SELECT count() FROM Lead '
+                ' ORDER BY Name'
             );
         }
-        else if ( getObject == 'Opportunity' ){
-            result.records = Database.query(
+        else if ( getObjectName == 'Opportunity' ){
+            result = Database.query(
                 'SELECT Id, Name, Amount, CloseDate, StageName, Type FROM Opportunity' +
                 ' WITH SECURITY_ENFORCED' +
-                ' ORDER BY Name LIMIT :pageSize OFFSET :offset'
-            );
-            result.totalItemCount = Database.countQuery(
-                'SELECT count() FROM Opportunity '
+                ' ORDER BY Name'
             );
         }
-        else if ( getObject == 'Contact' ) {
-            result.records = Database.query(
+        else if ( getObjectName == 'Contact' ) {
+            result = Database.query(
                 'SELECT Id, Name, Email, Phone, Birthdate, LeadSource FROM Contact' +
                 ' WITH SECURITY_ENFORCED' +
-                ' ORDER BY Name LIMIT :pageSize OFFSET :offset'
-            );
-            result.totalItemCount = Database.countQuery(
-                'SELECT count() FROM Contact '
+                ' ORDER BY Name'
             );
         }
 

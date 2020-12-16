@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : ashish765082@gmail.com
  * @group             : 
- * @last modified on  : 12-04-2020
+ * @last modified on  : 12-16-2020
  * @last modified by  : ashish765082@gmail.com
  * Modifications Log 
  * Ver   Date         Author                   Modification
@@ -76,18 +76,26 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     // Variables for datatable
     selectedRows = [];
     selectedRowsIds = [];
+
+    // initializing columns for different datatables
     accountColumns = accountColumns;
     leadColumns = leadColumns;
     opportunityColumns = opportunityColumns;
     contactColumns = contactColumns;
-    data = [];
+
+
+    @track retrivedRecords = []; //it contains all the records.
+    @track dataToDisplay = []; //data to be displayed in the table
+    @track startingRecord = 1; //start record position per page
+    @track endingRecord = 0; //end record position per page
     error;
     wiredActivities;
 
     //Variables for pagination
     pageSize = 10;
-    @track pageNumber = 1;
+    pageNumber = 1;
     totalItemCount = 0;
+    totalPages = 0;
 
     //Variables for modals
     bShowModalNew = false;
@@ -97,25 +105,34 @@ export default class RecPage extends NavigationMixin(LightningElement) {
 
     // Will go to the previous page.
     handlePreviousPage() {
-        this.pageNumber = this.pageNumber - 1;
+        if (this.pageNumber > 1) {
+            this.pageNumber = this.pageNumber - 1; //decrease page by 1
+            this.displayRecordPerPage(this.pageNumber);
+        }
     }
 
     // Will go to the next page.
     handleNextPage() {
-        this.pageNumber = this.pageNumber + 1;
+        if((this.pageNumber<this.totalPages) && this.pageNumber !== this.totalPages){
+            this.pageNumber = this.pageNumber + 1; //increase page by 1
+            this.displayRecordPerPage(this.pageNumber);            
+        }
     }
 
     // Move the page to required destination.
-    handlePagi(event) {
+    handlePageButtonClick(event) {
         this.pageNumber = event.detail;
+        this.totalPages = Math.ceil(this.totalItemCount / this.pageSize);
+        this.displayRecordPerPage(this.pageNumber);
     }
     
     // Will set the page number to one whenever changing checkbox in paginator.
-    handleChangeSize(event)
+    handleChangePageSize(event)
     {
         this.pageSize = event.detail;
         this.pageNumber = 1;
-        refreshApex(this.wiredActivities);
+        this.totalPages = Math.ceil(this.totalItemCount / this.pageSize);
+        this.displayRecordPerPage(this.pageNumber);
     }
 
     // Will get the selecter row count.
@@ -178,8 +195,8 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     // Handles all kinds of deletion of record weather grouped or single.
     handleDelete() {
         deleteSelected({
-            'idLi': this.selectedRowsIds,
-            'getObject': this.tabValue
+            'listOfSelectedRecIds': this.selectedRowsIds,
+            'objRecordToDel': this.tabValue
         }).then(() => {
             refreshApex(this.wiredActivities);
             this.selectedRows = [];
@@ -188,21 +205,44 @@ export default class RecPage extends NavigationMixin(LightningElement) {
     }
 
     // Retrives the data from the apex class for the datatable and paginator.
-    @wire(getRecordsMethods, { getObject: '$tabValue', pageNumber: '$pageNumber', pageSize: '$pageSize' })
+    @wire(getRecordsMethods, { getObjectName: '$tabValue' })
     wiredRecords(value) {
         this.wiredActivities = value;
         const { data, error } = value;
         if (data) {
-            this.data = data.records;
-            this.pageSize = data.pageSize;
-            this.pageNumber = data.pageNumber;
-            this.totalItemCount = data.totalItemCount;
+            this.retrivedRecords = data;
+            this.totalItemCount = data.length;
+            this.totalPages = Math.ceil(this.totalItemCount / this.pageSize);
+
+            this.dataToDisplay = this.retrivedRecords.slice(0,this.pageSize); 
+            this.endingRecord = this.pageSize;
+
             this.error = undefined;
         } else if (error) {
             this.error = error;
             this.data = undefined;
         }
     }
+
+    //this method displays records page by page
+    displayRecordPerPage(page){
+
+        /*let's say for 2nd page, it will be => "Displaying 6 to 10 of 23 records. Page 2 of 5"
+        page = 2; pageSize = 5; startingRecord = 5, endingRecord = 10
+        so, slice(5,10) will give 5th to 9th records.
+        */
+        this.startingRecord = ((page -1) * this.pageSize) ;
+        this.endingRecord = (this.pageSize * page);
+
+        this.endingRecord = (this.endingRecord > this.totalItemCount) 
+                            ? this.totalItemCount : this.endingRecord; 
+
+        this.dataToDisplay = this.retrivedRecords.slice(this.startingRecord, this.endingRecord);
+
+        //increment by 1 to display the startingRecord count, 
+        //so for 2nd page, it will show "Displaying 6 to 10 of 23 records. Page 2 of 5"
+        this.startingRecord = this.startingRecord + 1;
+    } 
 
     // Changes the tabvalue whenever we change the tabs.
     getTab(event) {

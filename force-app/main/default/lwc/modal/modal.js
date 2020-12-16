@@ -3,7 +3,7 @@
  *                      Here I have first imported all kinds of object fields first.
  * @author            : ashish765082@gmail.com
  * @group             : 
- * @last modified on  : 12-03-2020
+ * @last modified on  : 12-16-2020
  * @last modified by  : ashish765082@gmail.com
  * Modifications Log 
  * Ver   Date         Author                   Modification
@@ -120,7 +120,7 @@ export default class Modal extends LightningElement {
                 this.saveObj.Account['Id'] = this.recId;
             }
 
-            createNewRec({ objWrap: this.saveObj })
+            createNewRec({ objToEditOrCreate: this.saveObj })
                 .then(() => {
                     this.saveObj.Account = {};
                     this.saveObj.RecordId = '';
@@ -145,7 +145,7 @@ export default class Modal extends LightningElement {
                 this.saveObj.Contact['Id'] = this.recId;
             }
 
-            createNewRec({ objWrap: this.saveObj })
+            createNewRec({ objToEditOrCreate: this.saveObj })
                 .then(() => {
                     this.saveObj.Contact = {};
                     this.saveObj.RecordId = '';
@@ -170,7 +170,7 @@ export default class Modal extends LightningElement {
                 this.saveObj.Lead['Id'] = this.recId;
             }
 
-            createNewRec({ objWrap: this.saveObj })
+            createNewRec({ objToEditOrCreate: this.saveObj })
                 .then(() => {
                     this.saveObj.Lead = {};
                     this.saveObj.RecordId = '';
@@ -194,7 +194,7 @@ export default class Modal extends LightningElement {
                 this.saveObj.Opportunity['Id'] = this.recId;
             }
 
-            createNewRec({ objWrap: this.saveObj })
+            createNewRec({ objToEditOrCreate: this.saveObj })
                 .then(() => {
                     this.saveObj.Opportunity = {};
                     this.saveObj.RecordId = '';
