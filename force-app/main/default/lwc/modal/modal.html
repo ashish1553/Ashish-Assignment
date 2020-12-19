@@ -2,7 +2,7 @@
   @description       : This page is for showing all kinds of modals.
   @author            : ashish765082@gmail.com
   @group             : 
-  @last modified on  : 12-03-2020
+  @last modified on  : 12-19-2020
   @last modified by  : ashish765082@gmail.com
   Modifications Log 
   Ver   Date         Author                   Modification
@@ -27,18 +27,40 @@
             <!-- This is modal body if New Object is fired -->
             <template if:true={isNew}>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                    <lightning-record-form object-api-name={objectApiName} fields={myFields} onsubmit={handleSubmit}
-                        oncancel={handleClose}>
-                    </lightning-record-form>
+                    <lightning-record-edit-form object-api-name={objectApiName}
+                        onsubmit={handleSubmit}>
+                        <lightning-messages>
+                        </lightning-messages>
+                        <template for:each={dataFields} for:item="dataField">
+                            <lightning-input-field key={dataField} field-name={dataField}>
+                            </lightning-input-field>
+                        </template>
+                        <lightning-button class="slds-m-top_small" variant="brand" type="submit" name="update"
+                            label="Create">
+                        </lightning-button>
+                        <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleClose}>
+                        </lightning-button>
+                    </lightning-record-edit-form>
                 </div>
             </template>
 
             <!-- This is modal body if Edid Object is fired -->
             <template if:true={isEdit}>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
-                    <lightning-record-form object-api-name={objectApiName} fields={myFields} record-id={recId}
-                        mode="edit" onsubmit={handleSubmit} oncancel={handleClose}>
-                    </lightning-record-form>
+                    <lightning-record-edit-form record-id={recId} object-api-name={objectApiName}
+                        onsubmit={handleSubmit}>
+                        <lightning-messages>
+                        </lightning-messages>
+                        <template for:each={dataFields} for:item="dataField">
+                            <lightning-input-field key={dataField} field-name={dataField}>
+                            </lightning-input-field>
+                        </template>
+                        <lightning-button class="slds-m-top_small" variant="brand" type="submit" name="update"
+                            label="Update">
+                        </lightning-button>
+                        <lightning-button class="slds-m-top_small" label="Cancel" onclick={handleClose}>
+                        </lightning-button>
+                    </lightning-record-edit-form>
                 </div>
             </template>
 
